@@ -28,7 +28,7 @@ class Check:
         elif len(Arg) == 0 or len(Arg) > 2:
             parser.print_help()
             parser.exit()
-        # Kiểm tra file có tồn tại hay không
+        # Check whether file exist or not
         if (self.CheckFileExist(Arg)):
             self.getType(Arg)
         else:
@@ -78,14 +78,14 @@ class Handler:
         self.CheckRules()
 
     def GetFile(self):
-        # Khai báo file
+        # Khai báo
         if self.type == '.zip':
             self.FileCrack = zipfile.ZipFile(self.location)
         else:
             self.FileCrack = rarfile.RarFile(self.location)
 
     def Brute(self,password):
-        # Brute với các pass đưa vào, nếu .zip thì phải encode string password thành utf-8 vì module zipfile bắt buộc
+        # .zip encode string password -> utf-8 
         try:
             if self.type == '.zip':
                 tryPass = password.encode()
@@ -103,7 +103,7 @@ class Handler:
     def CheckRules(self):
         self.start_time = time.process_time()
         print ('Cracking...')
-        # Nếu không có rules thì lặp vô hạn
+        # Infinite loop
         if not self.rules:
             length = 1
             while True:
@@ -111,7 +111,7 @@ class Handler:
                 if self.result:
                     return
                 length += 1
-        # Nếu có rules thì sẽ lặp từ độ dài <min> <max> của các argument đưa vào
+       
         else:
             for length in range(self.minLength, self.maxLength + 1):
                 self.SendRequest(length)
